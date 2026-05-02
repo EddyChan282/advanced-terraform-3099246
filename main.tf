@@ -1,16 +1,16 @@
 ### PROVIDER
 provider "google" {
-  project = "advancedterraform" #replace this with your project-id
+  project = "caramel-banner-363110" #replace this with your project-id
   region  = "us-central1"
   zone    = "us-central1-a"
 }
 
-### NETWORK
+### NETWORK vpc 
 data "google_compute_network" "default" {
   name                    = "default"
 }
 
-## SUBNET
+## SUBNET attach vm to vpc
 resource "google_compute_subnetwork" "subnet-1" {
   name                     = "subnet1"
   ip_cidr_range            = "10.127.0.0/20"
@@ -19,6 +19,7 @@ resource "google_compute_subnetwork" "subnet-1" {
   private_ip_google_access = true
 }
 
+# firewall rule to allow traffic to the subnet
 resource "google_compute_firewall" "default" {
   name    = "test-firewall"
   network = data.google_compute_network.default.self_link
